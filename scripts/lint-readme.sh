@@ -9,7 +9,12 @@ status=$?
 # Checked outside a pipeline: plain sh has no pipefail, so a failed scan would look clean.
 [ "$status" -le 1 ] || exit "$status"
 
-if printf '%s\n' "$links" | grep -vE ':(\]\(|src=")(https?://|#|mailto:)|^$'; then
+relative=$(printf '%s\n' "$links" | grep -vE ':(\]\(|src=")(https?://|#|mailto:)|^$')
+status=$?
+[ "$status" -le 1 ] || exit "$status"
+
+if [ -n "$relative" ]; then
+  printf '%s\n' "$relative"
   echo "use absolute URLs for these links"
   exit 1
 fi
