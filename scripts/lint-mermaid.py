@@ -66,6 +66,10 @@ def diagrams(path):
 
         body.append(text)
 
+    # A block still open at end of file is checked too, so a cut-off diagram fails the lint.
+    if start is not None:
+        yield start, "\n".join(body) + "\n"
+
 
 def puppeteer_args(workdir):
     """Return extra mmdc arguments that disable the Chromium sandbox when requested."""
