@@ -7,6 +7,9 @@ use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use proptest::prelude::*;
 use timebridge::{ExactDuration, RangeError, Timestamp};
 
+/// 1601-01-01T00:00:00Z, the earliest `SystemTime` on Windows, in 100 ns ticks since the Unix epoch.
+const WINDOWS_EPOCH_TICKS: i128 = -11_644_473_600 * 10_000_000;
+
 /// Every total nanosecond count a [`Timestamp`] or [`ExactDuration`] can hold.
 fn representable_nanos() -> impl Strategy<Value = i128> {
     Timestamp::MIN.as_unix_nanos()..=Timestamp::MAX.as_unix_nanos()
@@ -96,10 +99,10 @@ proptest! {
 
     /// `CONVERSION-001`: `SystemTime` round-trips losslessly across the epoch.
     ///
-    /// Inputs are whole 100 ns ticks within about ±3,600 years so they are exactly representable
-    /// on every tier-1 platform, including Windows.
+    /// Inputs are whole 100 ns ticks from 1601-01-01 to about the year 5600, so they are exactly
+    /// representable on every tier-1 platform. Windows counts 100 ns ticks since 1601.
     #[test]
-    fn conversion_001_system_time_round_trip(ticks in -(1_i128 << 60)..(1_i128 << 60)) {
+    fn conversion_001_system_time_round_trip(ticks in WINDOWS_EPOCH_TICKS..(1_i128 << 60)) {
         let timestamp = Timestamp::from_unix_nanos(ticks * 100).unwrap();
         let system = SystemTime::try_from(timestamp).unwrap();
 
@@ -117,4 +120,16 @@ proptest! {
             prop_assert_eq!(later.checked_duration_since(timestamp), Some(duration));
         }
     }
+}
+
+/// `TIMESTAMP-004` / `CONVERSION-003`: instants Windows' `SystemTime` cannot hold exactly are
+/// rejected instead of being rounded or wrapped.
+#[cfg(windows)]
+#[test]
+fn conversion_003_windows_system_time_limits() {
+    let before_1601 = Timestamp::from_unix_nanos((WINDOWS_EPOCH_TICKS - 1) * 100).unwrap();
+    let sub_tick = Timestamp::from_unix_nanos(1).unwrap();
+
+    assert_eq!(SystemTime::try_from(before_1601), Err(RangeError));
+    assert_eq!(SystemTime::try_from(sub_tick), Err(RangeError));
 }
