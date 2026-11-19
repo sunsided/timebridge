@@ -121,6 +121,7 @@ tasks:
   lint:mermaid:
     desc: Render every mermaid diagram (Markdown and doc comments) to catch broken ones
     cmds:
+      - python3 -m unittest discover -s scripts -p 'test_*.py'
       # Passes without mermaid-cli when there are no diagrams; set MMDC to override the command.
       - python3 scripts/lint-mermaid.py
 
