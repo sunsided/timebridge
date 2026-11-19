@@ -1,0 +1,12 @@
+# https://github.com/crate-ci/typos/blob/master/docs/reference.md
+[files]
+extend-exclude = [
+  "*.lock",
+  "**/proptest-regressions/**",
+  "LICENSES/**",
+]
+
+[default.extend-words]
+# Project-specific words typos flags wrongly, e.g. `ser = "ser"`. Keep each entry justified.
+
+[default.extend-identifiers]
