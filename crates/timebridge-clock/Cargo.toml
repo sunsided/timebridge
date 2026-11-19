@@ -16,3 +16,7 @@ timebridge = { workspace = true, features = ["std"] }
 
 [lints]
 workspace = true
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--html-in-header", "docs/mermaid.html"]
