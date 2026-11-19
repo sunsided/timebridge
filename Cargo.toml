@@ -9,7 +9,6 @@ rust-version = "1.88"
 license = "MIT OR Apache-2.0"
 authors = ["Markus Mayer"]
 repository = "https://github.com/sunsided/timebridge"
-readme = "README.md"
 
 [workspace.dependencies]
 timebridge = { path = "crates/timebridge", version = "0.1.0", default-features = false }

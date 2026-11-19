@@ -48,3 +48,8 @@ pub use clock::{MonotonicClock, WallClock};
 pub use duration::ExactDuration;
 pub use error::RangeError;
 pub use timestamp::Timestamp;
+
+/// Doctests for the code examples in README.md (not part of the API).
+#[cfg(doctest)]
+#[doc = include_str!("../README.md")]
+mod readme_doctests {}

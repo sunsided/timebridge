@@ -94,3 +94,8 @@ impl ToTime for ExactDuration {
         Ok(SignedDuration::new(seconds, nanoseconds))
     }
 }
+
+/// Doctests for the code examples in README.md (not part of the API).
+#[cfg(doctest)]
+#[doc = include_str!("../README.md")]
+mod readme_doctests {}
