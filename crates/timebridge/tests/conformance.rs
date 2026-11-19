@@ -68,6 +68,7 @@ fn duration_002_floor_form() {
         ExactDuration::from_nanos(-500_000_000).unwrap().parts(),
         (-1, 500_000_000)
     );
+    assert_eq!(ExactDuration::new(0, 1_000_000_000), None);
     assert_eq!(ExactDuration::MIN.checked_neg(), None);
     assert_eq!(
         ExactDuration::MAX.checked_add(ExactDuration::from_nanos(1).unwrap()),
@@ -81,6 +82,10 @@ fn conversion_001_std_duration() {
     let negative = ExactDuration::from_secs(-1);
 
     assert_eq!(Duration::try_from(negative), Err(RangeError));
+    assert_eq!(
+        Duration::try_from(ExactDuration::new(5, 7).unwrap()),
+        Ok(Duration::new(5, 7))
+    );
     assert_eq!(
         ExactDuration::try_from(Duration::new(5, 7)),
         Ok(ExactDuration::new(5, 7).unwrap())
