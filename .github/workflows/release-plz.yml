@@ -2,7 +2,7 @@
 # is merged, creates the vX.Y.Z / <crate>-vX.Y.Z tags and GitHub Releases. It never publishes: the
 # tag push starts publish-crates-io.yml, which publishes from the tag-restricted `crates-io` environment.
 # The App token matters: tags and PRs created with GITHUB_TOKEN would not trigger other workflows.
-# Git Flow repos drop the release-pr job (docs/release.md). Pin actions with scripts/pin-actions.py.
+# Every action is pinned to a commit SHA; Dependabot keeps the pins current.
 name: Release-plz
 
 on:

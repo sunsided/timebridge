@@ -21,7 +21,7 @@ custom_major_increment_regex = "(?m)^BREAKING CHANGE:|^Break\\b"
 [changelog]
 commit_parsers = [
   { message = "^(Merge|Release|Bump version)\\b", skip = true },
-  # Dependabot subjects carry an ecosystem prefix (templates/.github/dependabot.yml).
+  # Dependabot subjects carry an ecosystem prefix (.github/dependabot.yml).
   { message = "^Actions: ", skip = true },
   { message = "^(Add|Introduce|Support|Allow|Implement|Expose)\\b", group = "Added" },
   { message = "^(Fix|Correct|Resolve|Prevent|Repair)\\b", group = "Fixed" },

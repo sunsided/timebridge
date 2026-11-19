@@ -1,4 +1,4 @@
-# Lints the workflows themselves. Action refs are tags here; pin with scripts/pin-actions.py.
+# Lints the workflows themselves. Every action is pinned to a commit SHA.
 name: GitHub Actions lint
 
 # No path filters: a path-filtered workflow cannot be a required status check.
@@ -26,7 +26,10 @@ jobs:
           persist-credentials: false
       # taiki-e/install-action has no actionlint; `go install` pins the version and verifies
       # it against the Go checksum database. Go is preinstalled on ubuntu-latest.
+      # GOTOOLCHAIN=local: fail on a too-old runner Go instead of downloading another toolchain.
       - run: go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
+        env:
+          GOTOOLCHAIN: local
       - run: '"$(go env GOPATH)/bin/actionlint" -color'
 
   zizmor:

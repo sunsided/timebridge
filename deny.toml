@@ -10,7 +10,7 @@ ignore = [
 ]
 
 [licenses]
-# Permissive licenses plus the weak-copyleft ones this project family uses (see docs/licensing.md).
+# Permissive licenses plus the weak-copyleft ones this project family uses.
 allow = [
   "0BSD",
   "Apache-2.0",

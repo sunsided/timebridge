@@ -1,7 +1,6 @@
 # Publishes a crate when release-plz pushes its tag (vX.Y.Z, or <crate>-vX.Y.Z in multi-crate repos).
-# Runs in the `crates-io` environment, which only allows v*.*.* / *-v*.*.* tags (docs/github.md).
+# Runs in the `crates-io` environment, which only allows v*.*.* / *-v*.*.* tags.
 # crates.io trusted publishing is bound to this file name and environment: do not rename either.
-# Action refs are tags here; pin with scripts/pin-actions.py.
 name: Publish
 
 on:
