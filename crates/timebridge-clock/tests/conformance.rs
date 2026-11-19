@@ -19,6 +19,21 @@ fn clock_003_wall_jump_keeps_monotonic_reading() {
     assert!(clock.read() >= start);
 }
 
+/// An `advance` that overflows panics without moving either reading.
+#[test]
+fn advance_overflow_leaves_readings_untouched() {
+    // Wall time has headroom left when elapsed time overflows.
+    let clock = ManualClock::new(Timestamp::MIN);
+    clock.advance(Duration::from_secs(i64::MAX.unsigned_abs()));
+    let (wall, elapsed) = (clock.now(), clock.read());
+
+    let result = std::panic::catch_unwind(|| clock.advance(Duration::from_secs(1)));
+
+    assert!(result.is_err());
+    assert_eq!(clock.now(), wall);
+    assert_eq!(clock.read(), elapsed);
+}
+
 /// `CLOCK-003`: system readings never decrease, and reversed order yields a negative span.
 #[test]
 fn clock_003_system_monotonic_order() {

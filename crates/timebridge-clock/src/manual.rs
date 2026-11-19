@@ -68,11 +68,13 @@ impl ManualClock {
         let step = crate::exact(duration);
 
         self.update(|state| {
-            state.wall = state.wall.checked_add(step).expect("wall time overflowed");
-            state.elapsed = state
+            // Compute both before writing, so a panic leaves the readings untouched.
+            let wall = state.wall.checked_add(step).expect("wall time overflowed");
+            let elapsed = state
                 .elapsed
                 .checked_add(step)
                 .expect("elapsed time overflowed");
+            *state = State { wall, elapsed };
         });
     }
 
