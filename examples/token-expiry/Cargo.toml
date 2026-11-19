@@ -1,0 +1,23 @@
+[package]
+name = "token-expiry"
+description = "Demo library: token expiry that depends only on temporal-core."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+
+[dependencies]
+temporal-core.workspace = true
+
+[dev-dependencies]
+temporal-clock.workspace = true
+temporal-jiff.workspace = true
+temporal-chrono.workspace = true
+temporal-time.workspace = true
+jiff = { workspace = true, features = ["std"] }
+chrono = { workspace = true, features = ["now"] }
+time = { workspace = true, features = ["std"] }
+
+[lints]
+workspace = true

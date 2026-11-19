@@ -1,0 +1,32 @@
+[workspace]
+resolver = "3"
+members = ["crates/*", "examples/*"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.88"
+license = "MIT OR Apache-2.0"
+
+[workspace.dependencies]
+temporal-core = { path = "crates/temporal-core", default-features = false }
+temporal-clock = { path = "crates/temporal-clock" }
+temporal-jiff = { path = "crates/temporal-jiff" }
+temporal-chrono = { path = "crates/temporal-chrono" }
+temporal-time = { path = "crates/temporal-time" }
+jiff = { version = "1.0.1", default-features = false }
+chrono = { version = "0.4.45", default-features = false }
+time = { version = "0.3.55", default-features = false }
+proptest = "1.12.0"
+
+[workspace.lints.rust]
+missing_docs = "warn"
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+missing_docs_in_private_items = "warn"
+mod_module_files = "warn"
+
+[workspace.lints.rustdoc]
+broken_intra_doc_links = "warn"
