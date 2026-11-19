@@ -63,8 +63,9 @@ impl ManualClock {
     ///
     /// # Panics
     ///
-    /// Panics if either reading would leave its representable range. Both readings are then
-    /// left unchanged, so a caller that catches the panic can keep using the clock.
+    /// Panics if `duration` exceeds `i64::MAX` seconds, or if either reading would leave its
+    /// representable range. Both readings are then left unchanged, so a caller that catches the
+    /// panic can keep using the clock.
     pub fn advance(&self, duration: Duration) {
         let step = crate::exact(duration);
 
@@ -123,6 +124,7 @@ impl MonotonicClock for ManualClock {
     }
 }
 
+/// Overflow tests for [`ManualClock::advance`]: a panic must leave both readings unchanged.
 #[cfg(test)]
 mod tests {
     use std::panic::{self, AssertUnwindSafe};
