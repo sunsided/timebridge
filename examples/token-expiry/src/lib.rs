@@ -7,6 +7,7 @@
 //! comparison.
 
 #![no_std]
+#![forbid(unsafe_code)]
 
 use timebridge::{ExactDuration, Timestamp, WallClock};
 

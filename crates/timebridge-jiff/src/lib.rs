@@ -27,6 +27,7 @@
 //! ```
 
 #![no_std]
+#![forbid(unsafe_code)]
 
 pub use timebridge::RangeError;
 use timebridge::{ExactDuration, Timestamp};
@@ -88,3 +89,8 @@ impl ToJiff for ExactDuration {
         jiff::SignedDuration::try_from_nanos_i128(self.as_nanos()).ok_or(RangeError)
     }
 }
+
+/// Doctests for the code examples in README.md (not part of the API).
+#[cfg(doctest)]
+#[doc = include_str!("../README.md")]
+mod readme_doctests {}

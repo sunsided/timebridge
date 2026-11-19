@@ -9,6 +9,8 @@
 //! [`WallClock`]: timebridge::WallClock
 //! [`MonotonicClock`]: timebridge::MonotonicClock
 
+#![forbid(unsafe_code)]
+
 mod fixed;
 mod manual;
 mod system;
@@ -28,3 +30,8 @@ fn exact(duration: std::time::Duration) -> timebridge::ExactDuration {
         .try_into()
         .expect("clock intervals never exceed i64::MAX seconds")
 }
+
+/// Doctests for the code examples in README.md (not part of the API).
+#[cfg(doctest)]
+#[doc = include_str!("../README.md")]
+mod readme_doctests {}
