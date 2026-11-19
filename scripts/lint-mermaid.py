@@ -49,7 +49,11 @@ def doc_lines(path):
 
 
 def diagrams(path):
-    """Yield (start line, source) for each mermaid block in a file."""
+    """Yield (start line, source, closed) for each mermaid block in a file.
+
+    `closed` is False for a block still open at end of file. That is a truncated file, so it is
+    reported as broken whether or not the surviving lines render.
+    """
     start, body = None, []
 
     for number, text in doc_lines(path):
@@ -60,15 +64,14 @@ def diagrams(path):
             continue
 
         if text is None or FENCE_CLOSE.match(text):
-            yield start, "\n".join(body) + "\n"
+            yield start, "\n".join(body) + "\n", True
             start = None
             continue
 
         body.append(text)
 
-    # A block still open at end of file is checked too, so a cut-off diagram fails the lint.
     if start is not None:
-        yield start, "\n".join(body) + "\n"
+        yield start, "\n".join(body) + "\n", False
 
 
 def puppeteer_args(workdir):
@@ -95,11 +98,16 @@ def render(mmdc, extra, source, workdir, index):
 def main():
     """Entry point."""
     files = [Path(p) for p in sys.argv[1:]] or tracked_files()
-    found = [(path, line, src) for path in files for line, src in diagrams(path)]
+    blocks = [(path, line, src, closed) for path in files for line, src, closed in diagrams(path)]
+    found = [(path, line, src) for path, line, src, closed in blocks if closed]
+    unclosed = [(path, line) for path, line, _, closed in blocks if not closed]
+
+    for path, line in unclosed:
+        print(f"{path}:{line}: mermaid block is never closed\n")
 
     if not found:
-        print("no mermaid diagrams found")
-        return
+        print(f"no closed mermaid diagrams found, {len(unclosed)} unclosed")
+        sys.exit(1 if unclosed else 0)
 
     mmdc = shlex.split(os.environ.get("MMDC", "mmdc"))
 
@@ -109,7 +117,7 @@ def main():
             "npm install -g @mermaid-js/mermaid-cli, or set MMDC"
         )
 
-    failures = 0
+    failures = len(unclosed)
 
     with tempfile.TemporaryDirectory() as workdir:
         extra = puppeteer_args(workdir)
@@ -121,7 +129,7 @@ def main():
                 failures += 1
                 print(f"{path}:{line}: mermaid diagram failed to render\n{error}\n")
 
-    print(f"{len(found)} diagram(s) checked, {failures} broken")
+    print(f"{len(found) + len(unclosed)} diagram(s) checked, {failures} broken")
     sys.exit(1 if failures else 0)
 
 
