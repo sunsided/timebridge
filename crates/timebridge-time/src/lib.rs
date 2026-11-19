@@ -7,7 +7,9 @@
 //!
 //! Both directions are lossless (`CONVERSION-001`) and fail with [`RangeError`] instead of
 //! clamping (`TIMESTAMP-004`). `time`'s default date range (years -9999 to 9999) is narrower
-//! than [`timebridge::Timestamp`].
+//! than [`timebridge::Timestamp`], so [`ToTime`] can fail for timestamps. `time`'s duration
+//! range is slightly wider at the negative end, so [`ToBridge`] can fail for durations within
+//! one second of [`time::SignedDuration::MIN`].
 //!
 //! [`time::OffsetDateTime`] has no direct conversion because it carries an offset that a
 //! [`timebridge::Timestamp`] would drop. Call [`time::OffsetDateTime::to_utc`] first to
