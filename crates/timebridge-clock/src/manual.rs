@@ -63,16 +63,19 @@ impl ManualClock {
     ///
     /// # Panics
     ///
-    /// Panics if either reading would leave its representable range.
+    /// Panics if either reading would leave its representable range. Both readings are then
+    /// left unchanged, so a caller that catches the panic can keep using the clock.
     pub fn advance(&self, duration: Duration) {
         let step = crate::exact(duration);
 
         self.update(|state| {
-            state.wall = state.wall.checked_add(step).expect("wall time overflowed");
-            state.elapsed = state
+            // Compute both before writing, so a panic leaves the readings untouched.
+            let wall = state.wall.checked_add(step).expect("wall time overflowed");
+            let elapsed = state
                 .elapsed
                 .checked_add(step)
                 .expect("elapsed time overflowed");
+            *state = State { wall, elapsed };
         });
     }
 
@@ -117,5 +120,49 @@ impl MonotonicClock for ManualClock {
     fn duration_between(&self, start: ExactDuration, end: ExactDuration) -> ExactDuration {
         end.checked_sub(start)
             .expect("difference of nonnegative readings fits")
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::panic::{self, AssertUnwindSafe};
+    use std::time::Duration;
+
+    use timebridge::{MonotonicClock, Timestamp, WallClock};
+
+    use super::ManualClock;
+
+    /// Calls `clock.advance(duration)`, expecting it to panic with `message`, and asserts that
+    /// neither reading moved.
+    fn assert_advance_panics_untouched(clock: &ManualClock, duration: Duration, message: &str) {
+        let (wall, elapsed) = (clock.now(), clock.read());
+
+        let payload = panic::catch_unwind(AssertUnwindSafe(|| clock.advance(duration)))
+            .expect_err("advance should have panicked");
+        let actual = payload
+            .downcast_ref::<&str>()
+            .copied()
+            .or_else(|| payload.downcast_ref::<String>().map(String::as_str));
+
+        assert_eq!(actual, Some(message));
+        assert_eq!(clock.now(), wall);
+        assert_eq!(clock.read(), elapsed);
+    }
+
+    /// An elapsed-time overflow leaves the wall reading untouched, though it had headroom.
+    #[test]
+    fn advance_elapsed_overflow_leaves_readings_untouched() {
+        let clock = ManualClock::new(Timestamp::MIN);
+        clock.advance(Duration::from_secs(i64::MAX.unsigned_abs()));
+
+        assert_advance_panics_untouched(&clock, Duration::from_secs(1), "elapsed time overflowed");
+    }
+
+    /// A wall-time overflow leaves the elapsed reading untouched, though it had headroom.
+    #[test]
+    fn advance_wall_overflow_leaves_readings_untouched() {
+        let clock = ManualClock::new(Timestamp::MAX);
+
+        assert_advance_panics_untouched(&clock, Duration::from_secs(1), "wall time overflowed");
     }
 }
