@@ -85,6 +85,12 @@ tasks:
       - typos --write-changes
       - task: fmt
 
+  check:nostd:
+    desc: Build the no_std crates without std on a bare-metal target
+    cmds:
+      - rustup target add thumbv7em-none-eabihf
+      - cargo check -p timebridge -p timebridge-jiff -p timebridge-chrono -p timebridge-time --no-default-features --target thumbv7em-none-eabihf
+
   lint:separators:
     desc: Fail on `// ----` style separator comments (split the file into modules instead)
     cmds:
@@ -190,6 +196,7 @@ tasks:
       - task: lint:branch
       - task: fmt:check
       - task: lint
+      - task: check:nostd
       - task: doc
       - task: test
       - task: deny
