@@ -1,0 +1,13 @@
+[package]
+name = "timebridge-clock"
+description = "System, fixed and manually driven clocks implementing the timebridge clock traits."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+timebridge = { workspace = true, features = ["std"] }
+
+[lints]
+workspace = true

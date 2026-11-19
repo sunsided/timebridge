@@ -2,18 +2,18 @@
 
 Two implementations of the same token-expiry library:
 
-- `examples/token-expiry`: public API uses `temporal_core::{Timestamp, WallClock}`.
+- `examples/token-expiry`: public API uses `timebridge::{Timestamp, WallClock}`.
 - `examples/token-expiry-jiff`: public API uses `jiff::{Timestamp, SignedDuration}`.
 
 Measured on 2026-11-19, rustc 1.100.0, Jiff 1.0.1 with `default-features = false`.
 
 | Criterion                      | Neutral core                               | Jiff directly                         |
 | ------------------------------ | ------------------------------------------ | ------------------------------------- |
-| Normal dependencies            | `temporal-core` (0 transitive deps)        | `jiff`, `jiff-core`                   |
+| Normal dependencies            | `timebridge` (0 transitive deps)        | `jiff`, `jiff-core`                   |
 | Clean debug build of the lib   | 0.2 s                                      | 1.9 s                                 |
 | Clock injection                | `&dyn WallClock`, shared trait             | none; caller passes `now`             |
-| Consumer on Jiff               | `.to_temporal()` / `.to_jiff()` at the edge | no conversion                         |
-| Consumer on Chrono or `time`   | `.to_temporal()` / `.to_chrono()` etc.     | adds Jiff; converts via third-party crates (`jiff-chrono-conversions`, `timetraveler`) or by hand |
+| Consumer on Jiff               | `.to_bridge()` / `.to_jiff()` at the edge | no conversion                         |
+| Consumer on Chrono or `time`   | `.to_bridge()` / `.to_chrono()` etc.     | adds Jiff; converts via third-party crates (`jiff-chrono-conversions`, `timetraveler`) or by hand |
 
 ## Findings
 

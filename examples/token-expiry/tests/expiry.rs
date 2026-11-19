@@ -2,8 +2,8 @@
 
 use std::time::Duration;
 
-use temporal_clock::ManualClock;
-use temporal_core::{ExactDuration, Timestamp};
+use timebridge::{ExactDuration, Timestamp};
+use timebridge_clock::ManualClock;
 use token_expiry::TokenClaims;
 
 /// A token is valid until the clock reaches its expiry, and expired from then on.

@@ -443,47 +443,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "temporal-chrono"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "proptest",
- "temporal-core",
-]
-
-[[package]]
-name = "temporal-clock"
-version = "0.1.0"
-dependencies = [
- "temporal-core",
-]
-
-[[package]]
-name = "temporal-core"
-version = "0.1.0"
-dependencies = [
- "proptest",
-]
-
-[[package]]
-name = "temporal-jiff"
-version = "0.1.0"
-dependencies = [
- "jiff",
- "proptest",
- "temporal-core",
-]
-
-[[package]]
-name = "temporal-time"
-version = "0.1.0"
-dependencies = [
- "proptest",
- "temporal-core",
- "time",
-]
-
-[[package]]
 name = "time"
 version = "0.3.55"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -503,17 +462,58 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9e1c906769ad99c88eaa54e728060edef082f8e358ff32030cb7c7d315e81109"
 
 [[package]]
+name = "timebridge"
+version = "0.1.0"
+dependencies = [
+ "proptest",
+]
+
+[[package]]
+name = "timebridge-chrono"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "proptest",
+ "timebridge",
+]
+
+[[package]]
+name = "timebridge-clock"
+version = "0.1.0"
+dependencies = [
+ "timebridge",
+]
+
+[[package]]
+name = "timebridge-jiff"
+version = "0.1.0"
+dependencies = [
+ "jiff",
+ "proptest",
+ "timebridge",
+]
+
+[[package]]
+name = "timebridge-time"
+version = "0.1.0"
+dependencies = [
+ "proptest",
+ "time",
+ "timebridge",
+]
+
+[[package]]
 name = "token-expiry"
 version = "0.1.0"
 dependencies = [
  "chrono",
  "jiff",
- "temporal-chrono",
- "temporal-clock",
- "temporal-core",
- "temporal-jiff",
- "temporal-time",
  "time",
+ "timebridge",
+ "timebridge-chrono",
+ "timebridge-clock",
+ "timebridge-jiff",
+ "timebridge-time",
 ]
 
 [[package]]

@@ -1,7 +1,7 @@
 //! An application built on Jiff using `token-expiry`.
 
-use temporal_core::{Timestamp, WallClock};
-use temporal_jiff::{ToJiff, ToTemporal};
+use timebridge::{Timestamp, WallClock};
+use timebridge_jiff::{ToBridge, ToJiff};
 use token_expiry::TokenClaims;
 
 /// The application's own clock, backed by Jiff.
@@ -10,13 +10,13 @@ struct JiffClock;
 impl WallClock for JiffClock {
     fn now(&self) -> Timestamp {
         jiff::Timestamp::now()
-            .to_temporal()
+            .to_bridge()
             .expect("Jiff timestamps always fit")
     }
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let lifetime = jiff::SignedDuration::from_mins(30).to_temporal()?;
+    let lifetime = jiff::SignedDuration::from_mins(30).to_bridge()?;
     let claims = TokenClaims::issue(&JiffClock, lifetime).ok_or("lifetime out of range")?;
     let expires: jiff::Timestamp = claims.expires_at.to_jiff()?;
 

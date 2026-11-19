@@ -9,11 +9,11 @@ rust-version = "1.88"
 license = "MIT OR Apache-2.0"
 
 [workspace.dependencies]
-temporal-core = { path = "crates/temporal-core", default-features = false }
-temporal-clock = { path = "crates/temporal-clock" }
-temporal-jiff = { path = "crates/temporal-jiff" }
-temporal-chrono = { path = "crates/temporal-chrono" }
-temporal-time = { path = "crates/temporal-time" }
+timebridge = { path = "crates/timebridge", default-features = false }
+timebridge-clock = { path = "crates/timebridge-clock" }
+timebridge-jiff = { path = "crates/timebridge-jiff" }
+timebridge-chrono = { path = "crates/timebridge-chrono" }
+timebridge-time = { path = "crates/timebridge-time" }
 jiff = { version = "1.0.1", default-features = false }
 chrono = { version = "0.4.45", default-features = false }
 time = { version = "0.3.55", default-features = false }

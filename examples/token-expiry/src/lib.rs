@@ -1,14 +1,14 @@
-//! Demo library: token expiry built only on [`temporal_core`].
+//! Demo library: token expiry built only on [`timebridge`].
 //!
 //! This crate stands in for a JWT or session library. Its public API speaks
-//! [`temporal_core::Timestamp`] and [`temporal_core::WallClock`], so it depends on no datetime
+//! [`timebridge::Timestamp`] and [`timebridge::WallClock`], so it depends on no datetime
 //! engine. The `examples/` directory shows applications using Jiff, Chrono and `time` calling
 //! it unchanged; `token-expiry-jiff` is the same library written directly against Jiff, for
 //! comparison.
 
 #![no_std]
 
-use temporal_core::{ExactDuration, Timestamp, WallClock};
+use timebridge::{ExactDuration, Timestamp, WallClock};
 
 /// The time-related claims of an issued token.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

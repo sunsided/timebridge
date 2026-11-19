@@ -1,6 +1,6 @@
-# Temporal interchange specification (draft 0.1)
+# timebridge interchange specification (draft 0.1)
 
-This document is normative for `temporal-core` and every adapter crate. The key words MUST,
+This document is normative for `timebridge` and every adapter crate. The key words MUST,
 MUST NOT and MAY are used as in RFC 2119. Conformance tests are named after the rule IDs
 (`timestamp_003_floor_form`, `conversion_003_leap_second_rejected`, ...).
 
