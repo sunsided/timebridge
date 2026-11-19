@@ -116,8 +116,8 @@ impl MonotonicClock for ManualClock {
     ///
     /// # Panics
     ///
-    /// Never in practice: both readings are in `0..=i64::MAX` seconds, so their difference
-    /// always fits.
+    /// Panics if `start` or `end` was not read from this clock and their difference is out of
+    /// range. Readings from this clock are never negative, so their difference always fits.
     fn duration_between(&self, start: ExactDuration, end: ExactDuration) -> ExactDuration {
         end.checked_sub(start)
             .expect("difference of nonnegative readings fits")
