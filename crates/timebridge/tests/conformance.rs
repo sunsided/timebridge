@@ -8,7 +8,17 @@ use proptest::prelude::*;
 use timebridge::{ExactDuration, RangeError, Timestamp};
 
 /// 1601-01-01T00:00:00Z, the earliest `SystemTime` on Windows, in 100 ns ticks since the Unix epoch.
+#[cfg(windows)]
 const WINDOWS_EPOCH_TICKS: i128 = -11_644_473_600 * 10_000_000;
+
+/// Earliest 100 ns tick the `SystemTime` round-trip property draws: 1601 on Windows.
+#[cfg(windows)]
+const SYSTEM_TIME_MIN_TICKS: i128 = WINDOWS_EPOCH_TICKS;
+
+/// Earliest 100 ns tick the `SystemTime` round-trip property draws: about 3,600 years before
+/// 1970 elsewhere, which keeps deep pre-epoch values covered.
+#[cfg(not(windows))]
+const SYSTEM_TIME_MIN_TICKS: i128 = -(1_i128 << 60);
 
 /// Every total nanosecond count a [`Timestamp`] or [`ExactDuration`] can hold.
 fn representable_nanos() -> impl Strategy<Value = i128> {
@@ -99,10 +109,11 @@ proptest! {
 
     /// `CONVERSION-001`: `SystemTime` round-trips losslessly across the epoch.
     ///
-    /// Inputs are whole 100 ns ticks from 1601-01-01 to about the year 5600, so they are exactly
-    /// representable on every tier-1 platform. Windows counts 100 ns ticks since 1601.
+    /// Inputs are whole 100 ns ticks up to about the year 5600, from 1601-01-01 on Windows (which
+    /// counts 100 ns ticks since 1601) and from about 1600 BCE elsewhere, so they are exactly
+    /// representable on every tier-1 platform.
     #[test]
-    fn conversion_001_system_time_round_trip(ticks in WINDOWS_EPOCH_TICKS..(1_i128 << 60)) {
+    fn conversion_001_system_time_round_trip(ticks in SYSTEM_TIME_MIN_TICKS..(1_i128 << 60)) {
         let timestamp = Timestamp::from_unix_nanos(ticks * 100).unwrap();
         let system = SystemTime::try_from(timestamp).unwrap();
 
