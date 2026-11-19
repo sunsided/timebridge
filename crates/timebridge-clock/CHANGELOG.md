@@ -1,0 +1,29 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [0.2.0](https://github.com/sunsided/timebridge/compare/timebridge-clock-v0.1.0...timebridge-clock-v0.2.0) - 2026-11-19
+
+### Added
+
+- Add release-plz and tag-driven crates.io publishing
+- Add per-crate READMEs and absolute README links
+- Add REUSE licensing with SPDX license texts
+
+### Changed
+
+- Cover the wall readings of FixedClock and SystemClock
+- Document the interval panic of ManualClock::advance
+- Test both ManualClock overflow directions and document the guarantee
+- Keep ManualClock readings intact when advance overflows
+- Tighten lints and forbid unsafe code
+- Render mermaid diagrams on docs.rs
+
+### Fixed
+
+- Correct the panic docs of ManualClock::duration_between
