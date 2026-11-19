@@ -85,6 +85,21 @@ tasks:
       - typos --write-changes
       - task: fmt
 
+  check:nostd:
+    desc: Lint and document the no_std crates without std, on a bare-metal target
+    vars:
+      NO_STD_CRATES: -p timebridge -p timebridge-jiff -p timebridge-chrono -p timebridge-time
+    preconditions:
+      - sh: command -v rustup
+        msg: "rustup not found - the bare-metal target thumbv7em-none-eabihf is installed with rustup"
+    cmds:
+      # A no-op once the target is installed.
+      - rustup target add thumbv7em-none-eabihf
+      - cargo clippy {{.NO_STD_CRATES}} --no-default-features --target thumbv7em-none-eabihf -- -D warnings
+      - cmd: cargo doc {{.NO_STD_CRATES}} --no-default-features --no-deps
+        env:
+          RUSTDOCFLAGS: -D warnings
+
   lint:separators:
     desc: Fail on `// ----` style separator comments (split the file into modules instead)
     cmds:
@@ -190,6 +205,7 @@ tasks:
       - task: lint:branch
       - task: fmt:check
       - task: lint
+      - task: check:nostd
       - task: doc
       - task: test
       - task: deny

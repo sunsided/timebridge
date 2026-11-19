@@ -10,7 +10,7 @@
 //! - [`WallClock`] and [`MonotonicClock`]: injectable sources of time.
 //!
 //! The crate has no dependencies and is `no_std`. The default `std` feature only adds
-//! conversions to and from [`std::time::SystemTime`].
+//! conversions to and from [`std::time::SystemTime`](https://doc.rust-lang.org/std/time/struct.SystemTime.html).
 //!
 //! ```mermaid
 //! graph LR
