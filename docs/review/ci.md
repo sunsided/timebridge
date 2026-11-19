@@ -7,9 +7,12 @@ summary: Keep task ci, ci.yml and hooks in sync; pinned, least-privilege workflo
 # CI, Taskfile and hooks stay in sync
 
 - The `ci` task in `Taskfile.dist.yaml` mirrors the jobs in `.github/workflows/ci.yml`
-  (`branch`, `fmt`, `clippy`, `style`, `doc`, `test`, `coverage`, `deny`, `msrv`, `semver`).
-  A change that adds, removes or renames a CI job, or changes its flags, must make the same
-  change to `task ci` and the task it calls, and the other way round.
+  (`branch`, `fmt`, `clippy`, `style`, `doc`, `test`, `deny`, `msrv`). `coverage` and `semver`
+  stay out of `task ci` on purpose (extra tools, and `semver` needs the published baseline);
+  they have their own `task coverage` and `task semver`. A change that adds, removes or
+  renames a CI job, or changes its flags, must make the same change to the matching task, and
+  the other way round.
+- Shell checks used by both CI and the Taskfile live in `scripts/`. Neither side inlines them.
 - The `test` job runs on Linux, macOS and Windows. Keep Windows: `SystemTime` has 100 ns
   resolution there, and `timebridge`'s `SystemTime` conversion relies on that being tested.
 - Local hooks in `.pre-commit-config.yaml` call Taskfile tasks. They must not duplicate

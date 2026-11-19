@@ -1,5 +1,5 @@
 # Keep in sync with `task ci` in the Taskfile. Job `name:`s are the required status checks.
-# Action refs are tags here; run scripts/pin-actions.py to pin them to commit SHAs.
+# Every action is pinned to a commit SHA; Dependabot keeps the pins current.
 name: CI
 
 on:
@@ -76,9 +76,9 @@ jobs:
         with:
           persist-credentials: false
       - name: No `// ----` separator comments
-        run: "! grep -rnE --include='*.rs' --exclude-dir=target --exclude-dir=.git '^[[:space:]]*//+[[:space:]]*[-=*#~_/]{4,}' ."
+        run: sh scripts/lint-separators.sh
       - name: Absolute URLs in README files
-        run: "! grep -rnoE --include='README.md' --exclude-dir=target --exclude-dir=.git --exclude-dir=review '(\\]\\(|src=\")[^)\"]*' . | grep -vE ':(\\]\\(|src=\")(https?://|#|mailto:)'"
+        run: sh scripts/lint-readme.sh
       - name: Typos
         uses: crate-ci/typos@276087d9a4f06398b3e04825487805e2d7375888 # v1.52.2
       - name: Review index is current
