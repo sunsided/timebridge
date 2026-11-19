@@ -24,10 +24,10 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: taiki-e/install-action@75a7c0f87bd666af3cdb75c5b9e9d03ab6044e6f # v2.90.6
-        with:
-          tool: actionlint
-      - run: actionlint -color
+      # taiki-e/install-action has no actionlint; `go install` pins the version and verifies
+      # it against the Go checksum database. Go is preinstalled on ubuntu-latest.
+      - run: go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
+      - run: '"$(go env GOPATH)/bin/actionlint" -color'
 
   zizmor:
     name: zizmor
