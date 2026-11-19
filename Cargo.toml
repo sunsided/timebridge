@@ -10,11 +10,11 @@ authors = ["Markus Mayer"]
 repository = "https://github.com/sunsided/timebridge"
 
 [workspace.dependencies]
-timebridge = { path = "crates/timebridge", version = "0.1.0", default-features = false }
-timebridge-clock = { path = "crates/timebridge-clock", version = "0.1.0" }
-timebridge-jiff = { path = "crates/timebridge-jiff", version = "0.1.0" }
-timebridge-chrono = { path = "crates/timebridge-chrono", version = "0.1.0" }
-timebridge-time = { path = "crates/timebridge-time", version = "0.1.0" }
+timebridge = { path = "crates/timebridge", version = "0.2.0", default-features = false }
+timebridge-clock = { path = "crates/timebridge-clock", version = "0.2.0" }
+timebridge-jiff = { path = "crates/timebridge-jiff", version = "0.2.0" }
+timebridge-chrono = { path = "crates/timebridge-chrono", version = "0.2.0" }
+timebridge-time = { path = "crates/timebridge-time", version = "0.2.0" }
 jiff = { version = "1.0.1", default-features = false }
 chrono = { version = "0.4.45", default-features = false }
 time = { version = "0.3.55", default-features = false }
