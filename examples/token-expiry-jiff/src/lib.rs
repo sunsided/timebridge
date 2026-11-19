@@ -5,6 +5,7 @@
 //! of a clock.
 
 #![no_std]
+#![forbid(unsafe_code)]
 
 use jiff::{SignedDuration, Timestamp};
 

@@ -9,6 +9,8 @@
 //! [`WallClock`]: timebridge::WallClock
 //! [`MonotonicClock`]: timebridge::MonotonicClock
 
+#![forbid(unsafe_code)]
+
 mod fixed;
 mod manual;
 mod system;

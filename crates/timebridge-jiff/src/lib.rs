@@ -27,6 +27,7 @@
 //! ```
 
 #![no_std]
+#![forbid(unsafe_code)]
 
 pub use timebridge::RangeError;
 use timebridge::{ExactDuration, Timestamp};

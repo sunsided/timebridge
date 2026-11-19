@@ -26,6 +26,7 @@
 //! ```
 
 #![no_std]
+#![forbid(unsafe_code)]
 
 use time::{SignedDuration, UtcDateTime};
 pub use timebridge::RangeError;
